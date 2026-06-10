@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prácticas Electroacústica — Repaso Examen</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #eef2f0;
+  --surface:      #e4ebe7;
+  --surface2:     #d8e3dc;
+  --ink:          #141f1a;
+  --ink2:         #2c3d34;
+  --ink3:         #5a7265;
+  --accent:       #1a5c42;
+  --accent2:      #2a8a62;
+  --accent-light: #d4ede3;
+  --border:       #b0c8bc;
+  --border-light: #ccddd4;
+  --sidebar-w:    290px;
+  --correct:      #165c2e;
+  --correct-bg:   #e2f5ea;
+  --wrong:        #7a1515;
+  --wrong-bg:     #fce8e8;
+  --neutral-bg:   #e8eeeb;
+  --header-bg:    #0f2e22;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── SIDEBAR ─────────────────────────────── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--header-bg);
+  color: #dceade;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+#sidebar-header {
+  padding: 28px 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+#sidebar-header h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e8f5ee;
+  line-height: 1.35;
+}
+
+#sidebar-header p {
+  font-size: 0.68rem;
+  color: #7aab8a;
+  margin-top: 5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+#sidebar nav { padding: 10px 0 48px; }
+
+.nav-section-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4a7a5a;
+  padding: 18px 20px 5px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #a8c8b4;
+  text-align: left;
+  padding: 7px 16px 7px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.80rem;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+  border-left: 3px solid transparent;
+  line-height: 1.4;
+}
+
+.nav-item .nav-num {
+  font-size: 0.65rem;
+  background: rgba(255,255,255,0.08);
+  color: #7aab8a;
+  border-radius: 3px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.05); color: #e8f5ee; }
+.nav-item.active { background: rgba(42,138,98,0.22); color: #7eedb4; border-left-color: var(--accent2); }
+.nav-item.active .nav-num { background: rgba(42,138,98,0.4); color: #7eedb4; }
+
+/* ── HAMBURGER ── */
+#hamburger {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 200;
+  background: var(--header-bg);
+  color: #e8f5ee;
+  border: none;
+  border-radius: 5px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ── MAIN ─────────────────────────────────── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 44px 52px 80px;
+  max-width: 900px;
+  min-width: 0;
+}
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.18s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ── PAGE HEADER ── */
+.page-eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+h2 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.page-divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent2) 0%, transparent 100%);
+  margin: 16px 0 28px;
+  border: none;
+}
+
+/* ── SECTION HEADINGS ── */
+h3 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--ink2);
+  margin: 36px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  background: var(--accent2);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+h4 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 22px 0 10px;
+}
+
+p { line-height: 1.78; color: var(--ink2); margin-bottom: 10px; font-size: 0.93rem; }
+
+/* ── CARD GRID ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 16px;
+  transition: border-color 0.15s;
+}
+
+.card:hover { border-color: var(--accent2); }
+
+.card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.card-value {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.card-sub {
+  font-size: 0.78rem;
+  color: var(--ink3);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* ── INFO BOX ── */
+.info-box {
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent2);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-size: 0.91rem;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+.info-box strong { color: var(--accent); }
+
+.warn-box {
+  background: #fdf6e3;
+  border-left: 4px solid #c09020;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 0.88rem;
+  color: #4a3800;
+  line-height: 1.7;
+}
+
+/* ── STEPS LIST ── */
+.steps-list {
+  counter-reset: step;
+  padding-left: 0;
+  list-style: none;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.steps-list li {
+  counter-increment: step;
+  padding: 10px 14px 10px 50px;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
+.steps-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 8px; border: 1px solid var(--border); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+  min-width: 320px;
+}
+
+th {
+  background: var(--ink2);
+  color: #e8f5ee;
+  padding: 10px 14px;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--ink2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--surface); }
+
+/* ── QA BLOCKS ── */
+.qa-block {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  margin: 10px 0;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.qa-block:hover { border-color: var(--accent2); }
+
+.qa-question {
+  padding: 12px 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--surface2);
+  transition: background 0.13s;
+}
+
+.qa-question:hover { background: var(--border-light); }
+
+.qa-toggle {
+  font-size: 0.8rem;
+  color: var(--ink3);
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: transform 0.2s;
+}
+
+.qa-toggle.open { transform: rotate(180deg); }
+
+.qa-answer {
+  padding: 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--ink2);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s ease, padding 0.2s;
+}
+
+.qa-answer.open {
+  max-height: 800px;
+  padding: 14px 16px;
+}
+
+.qa-answer ul { padding-left: 20px; margin: 4px 0; }
+.qa-answer li { margin-bottom: 3px; }
+
+/* ── PIN DIAGRAM ── */
+.pin-diagram {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.pin-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.pin-card-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink3);
+  margin-bottom: 10px;
+}
+
+.pin-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.85rem;
+}
+
+.pin-row:last-child { border-bottom: none; }
+
+.pin-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pin-1 { background: #c0c0c0; color: #111; }
+.pin-2 { background: #e05050; color: #fff; }
+.pin-3 { background: #404040; color: #fff; }
+
+.pin-label { color: var(--ink2); line-height: 1.3; }
+.pin-sub { font-size: 0.75rem; color: var(--ink3); }
+
+/* ── BADGE STRIP ── */
+.badge-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent2);
+  flex-shrink: 0;
+}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.hbox {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-top: 3px solid var(--accent2);
+  border-radius: 0 0 8px 8px;
+  padding: 14px 16px;
+}
+
+.hbox-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.hbox p { margin: 0; font-size: 0.88rem; }
+
+/* ── RESONANCE CARDS ── */
+.resonance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.res-card-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+
+.res-card-freq {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.res-card-unit {
+  font-size: 0.75rem;
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+.res-card-range {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--ink3);
+  background: var(--accent-light);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+/* ── COLOR STRIPS FOR CABLE COLORS ── */
+.color-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.color-swatch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  color: var(--ink2);
+}
+
+.swatch-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0,0,0,0.15);
+}
+
+/* ── PROCESS TIMELINE ── */
+.process-box {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+
+.process-header {
+  background: var(--ink2);
+  color: #e8f5ee;
+  padding: 10px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.process-body { padding: 16px; }
+
+/* ── TEST ENGINE ── */
+.progress-bar {
+  height: 5px;
+  background: var(--border-light);
+  border-radius: 3px;
+  margin: 12px 0 18px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+  border-radius: 3px;
+  transition: width 0.35s ease;
+}
+
+.q-counter {
+  font-size: 0.74rem;
+  color: var(--ink3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.question-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.1rem;
+  color: var(--ink);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.options { display: flex; flex-direction: column; gap: 9px; }
+
+.option-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 15px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.89rem;
+  color: var(--ink2);
+  transition: border-color 0.13s, background 0.13s;
+  line-height: 1.5;
+}
+
+.option-btn:hover:not(:disabled) { border-color: var(--accent2); background: var(--accent-light); }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); font-weight: 600; }
+.option-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+
+.explanation {
+  margin-top: 14px;
+  background: var(--neutral-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent2);
+  border-radius: 0 8px 8px 0;
+  padding: 13px 16px;
+  font-size: 0.87rem;
+  color: var(--ink2);
+  line-height: 1.7;
+  display: none;
+}
+
+.explanation.show { display: block; }
+
+.nav-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+  gap: 12px;
+}
+
+.btn {
+  background: var(--accent);
+  color: #e8f5ee;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.14s;
+}
+
+.btn:hover { background: var(--accent2); }
+.btn.secondary { background: var(--surface2); color: var(--ink); border: 1px solid var(--border); }
+.btn.secondary:hover { background: var(--border-light); }
+
+.score-box {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 36px;
+  text-align: center;
+}
+
+.score-number { font-family: 'Libre Baskerville', serif; font-size: 3.2rem; color: var(--accent); line-height: 1; }
+.score-label { font-size: 0.85rem; color: var(--ink3); margin-top: 6px; }
+
+.test-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 768px) {
+  #hamburger { display: flex; align-items: center; justify-content: center; }
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.35); }
+  #main { margin-left: 0; padding: 58px 18px 60px; }
+  h2 { font-size: 1.55rem; }
+  .card-grid { grid-template-columns: 1fr 1fr; }
+  .resonance-grid { grid-template-columns: 1fr; }
+  .highlight-2col { grid-template-columns: 1fr; }
+  .pin-diagram { flex-direction: column; }
+  #main { max-width: 100%; }
+  .test-wrap { padding: 18px; }
+}
+
+@media (max-width: 420px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .badge-strip { gap: 5px; }
+  h2 { font-size: 1.35rem; }
+}
+
+/* ── OVERLAY (mobile sidebar close) ── */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 90;
+}
+
+#overlay.active { display: block; }
+</style>
+</head>
+<body>
+
+<button id="hamburger" onclick="toggleSidebar()" aria-label="Menú">☰</button>
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<aside id="sidebar">
+  <div id="sidebar-header">
+    <h1>Prácticas<br>Electroacústica</h1>
+    <p>Repaso · 8 Prácticas</p>
+  </div>
+  <nav>
+    <div class="nav-section-label">Temario</div>
+    <button class="nav-item active" onclick="show('p1',this)"><span class="nav-num">P1</span> Conectores y soldadura</button>
+    <button class="nav-item" onclick="show('p2',this)"><span class="nav-num">P2</span> Componentes</button>
+    <button class="nav-item" onclick="show('p3',this)"><span class="nav-num">P3</span> Crimpado y redes</button>
+    <button class="nav-item" onclick="show('p4',this)"><span class="nav-num">P4</span> Construcción de micrófono</button>
+    <button class="nav-item" onclick="show('p5',this)"><span class="nav-num">P5</span> Diagramas polares</button>
+    <button class="nav-item" onclick="show('p6',this)"><span class="nav-num">P6</span> Cobertura de altavoz</button>
+    <button class="nav-item" onclick="show('p7',this)"><span class="nav-num">P7</span> Impedancia del altavoz</button>
+    <button class="nav-item" onclick="show('p8',this)"><span class="nav-num">P8</span> Filtros pasivos</button>
+    <div class="nav-section-label">Tests</div>
+    <button class="nav-item" onclick="show('t1',this)"><span class="nav-num">T1</span> Prácticas 1–2</button>
+    <button class="nav-item" onclick="show('t2',this)"><span class="nav-num">T2</span> Prácticas 3–4</button>
+    <button class="nav-item" onclick="show('t3',this)"><span class="nav-num">T3</span> Prácticas 5–6</button>
+    <button class="nav-item" onclick="show('t4',this)"><span class="nav-num">T4</span> Prácticas 7–8</button>
+    <button class="nav-item" onclick="show('t5',this)"><span class="nav-num">TG</span> Test General</button>
+  </nav>
+</aside>
+
+<main id="main">
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 1 — Conectores y soldadura
+═══════════════════════════════════════ -->
+<section class="page active" id="p1">
+  <div class="page-eyebrow">Práctica 1</div>
+  <h2>Conectores y soldadura</h2>
+  <hr class="page-divider">
+
+  <h3>Objetivo</h3>
+  <p>Identificar diferentes tipos de conectores de audio y realizar correctamente soldaduras para unir cables y conectores.</p>
+
+  <h3>Partes de la práctica</h3>
+  <p>La práctica se dividió en <strong>dos partes</strong>:</p>
+
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">Parte 1</div>
+      <p><strong>Identificación de conectores y cables</strong><br>Reconocimos los tipos de conectores más comunes (XLR, TRS, RCA) y los diferentes tipos de cables (balanceados y no balanceados).</p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">Parte 2</div>
+      <p><strong>Soldadura y montaje de un latiguillo XLR macho–XLR hembra</strong><br>Pelar y estañar los cables, desmontar conectores, estañar los pines, unión entre ellos, prueba de funcionamiento, cerrado de conectores y prueba final.</p>
+    </div>
+  </div>
+
+  <h3>Herramientas utilizadas</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Conectores y cables de audio</span>
+    <span class="badge"><span class="badge-dot"></span>Soldador y estaño</span>
+    <span class="badge"><span class="badge-dot"></span>Soporte</span>
+    <span class="badge"><span class="badge-dot"></span>Pelacables, cúter y alicates de corte</span>
+    <span class="badge"><span class="badge-dot"></span>Multímetro / polímetro</span>
+  </div>
+
+  <h3>Técnica de soldadura</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📏</div>
+      <div class="card-title">Posición del estaño</div>
+      <div class="card-value">≈ 4 mm</div>
+      <div class="card-sub">de la punta del soldador</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <div class="card-title">¿Por qué estañar ambas partes?</div>
+      <div class="card-value" style="font-size:0.88rem;font-weight:400">Para facilitar la posterior soldadura entre ambas partes</div>
+    </div>
+  </div>
+
+  <h3>Conector XLR</h3>
+  <p>Los conectores usados en la práctica fueron <strong>XLR macho y XLR hembra</strong>.</p>
+
+  <h4>Asignación de pines</h4>
+  <p>Los cables que llevan señal y sus pines correspondientes se denominan habitualmente:</p>
+  <div class="pin-diagram">
+    <div class="pin-card">
+      <div class="pin-card-title">Asignación de pines XLR</div>
+      <div class="pin-row">
+        <div class="pin-badge pin-1">1</div>
+        <div><div class="pin-label">Malla</div><div class="pin-sub">Tierra / GND</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-2">2</div>
+        <div><div class="pin-label">Señal positiva</div><div class="pin-sub">Caliente / Hot</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-3">3</div>
+        <div><div class="pin-label">Señal negativa</div><div class="pin-sub">Frío / Cold</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Diferencia macho / hembra (vistos desde atrás, donde se sueldan)</h4>
+  <div class="info-box">
+    Sí existe diferencia. Los pines <strong>están invertidos</strong> uno con respecto al otro, aunque los números de los pines se mantienen.
+  </div>
+
+  <div class="pin-diagram">
+    <div class="pin-card">
+      <div class="pin-card-title">XLR Macho — visto desde atrás</div>
+      <div class="pin-row">
+        <div class="pin-badge pin-2">2</div>
+        <div><div class="pin-label">Superior izquierda</div><div class="pin-sub">Positivo, caliente</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-1">1</div>
+        <div><div class="pin-label">Superior derecha</div><div class="pin-sub">Malla</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-3">3</div>
+        <div><div class="pin-label">Inferior centro</div><div class="pin-sub">Frío, negativo</div></div>
+      </div>
+    </div>
+    <div class="pin-card">
+      <div class="pin-card-title">XLR Hembra — visto desde atrás</div>
+      <div class="pin-row">
+        <div class="pin-badge pin-1">1</div>
+        <div><div class="pin-label">Superior izquierda</div><div class="pin-sub">Malla</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-2">2</div>
+        <div><div class="pin-label">Superior derecha</div><div class="pin-sub">Positivo, caliente</div></div>
+      </div>
+      <div class="pin-row">
+        <div class="pin-badge pin-3">3</div>
+        <div><div class="pin-label">Inferior centro</div><div class="pin-sub">Frío, negativo</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Cable balanceado</h3>
+  <p>Un cable balanceado está compuesto por <strong>tres conductores</strong>.</p>
+  <div class="color-strip">
+    <div class="color-swatch"><div class="swatch-dot" style="background:#e05050;"></div> Rojo (o de un color) — Señal positiva</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#222;"></div> Negro o transparente — Señal negativa</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#aaa; border-style:dashed;"></div> Trenza exterior — Malla</div>
+  </div>
+
+  <h3>Conector TRS (Jack)</h3>
+  <p>La manera coloquial de llamar al conector TRS es <strong>Jack</strong>.</p>
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">Con señal balanceada</div>
+      <p>Al anillo intermedio se suelda el cable <strong>frío o negativo (–)</strong></p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">Con señal estéreo</div>
+      <p>Al anillo intermedio se suelda el <strong>canal derecho</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 2 — Componentes
+═══════════════════════════════════════ -->
+<section class="page" id="p2">
+  <div class="page-eyebrow">Práctica 2</div>
+  <h2>Componentes</h2>
+  <hr class="page-divider">
+
+  <h3>Materiales usados</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Polímetro o multímetro</span>
+    <span class="badge"><span class="badge-dot"></span>Resistencias</span>
+    <span class="badge"><span class="badge-dot"></span>Pilas</span>
+    <span class="badge"><span class="badge-dot"></span>Placa de pruebas</span>
+    <span class="badge"><span class="badge-dot"></span>Generador de señales de audio</span>
+    <span class="badge"><span class="badge-dot"></span>Enchufe de 230 V</span>
+  </div>
+
+  <h3>Código de colores en resistencias</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Nº de bandas</div>
+      <div class="card-value">4 bandas</div>
+      <div class="card-sub">en los componentes de la práctica</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🥇</div>
+      <div class="card-title">Banda de tolerancia</div>
+      <div class="card-value">Dorada</div>
+      <div class="card-sub">±5% — se coloca a la derecha</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">✖️</div>
+      <div class="card-title">3ª banda (multiplicador)</div>
+      <div class="card-value">Nº de ceros</div>
+      <div class="card-sub">a añadir al valor de las dos primeras</div>
+    </div>
+  </div>
+
+  <h4>Valores teóricos y medidos</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Resistencia</th><th>Valor teórico</th><th>Valor medido</th></tr>
+      <tr><td>1</td><td>1 Ω</td><td>El que diera en la medición con el polímetro — dentro del margen del 5%</td></tr>
+      <tr><td>2</td><td>4.700 Ω</td><td>El que diera en la medición con el polímetro — dentro del margen del 5%</td></tr>
+      <tr><td>3</td><td>1 Ω</td><td>El que diera en la medición con el polímetro — dentro del margen del 5%</td></tr>
+    </table>
+  </div>
+
+  <h4>Regla para seleccionar la escala del polímetro</h4>
+  <div class="info-box">
+    Siempre se selecciona el <strong>valor mayor más cercano</strong>. Para medir 100 Ω → seleccionar la escala de <strong>200 Ω</strong>.
+  </div>
+
+  <h3>Asociaciones de resistencias</h3>
+  <p>Los tipos de asociaciones que se pueden realizar con componentes, equipos o cualquier otro tipo de elemento son: <strong>serie, paralelo y mixto</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tipo</th><th>Descripción</th><th>Cuando hay gran diferencia de valores</th></tr>
+      <tr><td><strong>Serie</strong></td><td>Elementos encadenados uno detrás de otro</td><td>La resistencia total tiende al <strong>valor mayor</strong></td></tr>
+      <tr><td><strong>Paralelo</strong></td><td>Elementos unidos por sus extremos</td><td>La resistencia total tiende al <strong>valor menor</strong></td></tr>
+      <tr><td><strong>Mixto</strong></td><td>Combinación de serie y paralelo</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="info-box">
+    Las resistencias se <strong>"pinchaban"</strong> en una placa de pruebas para realizar las asociaciones.
+  </div>
+
+  <h3>Mediciones con el polímetro</h3>
+  <p>El polímetro puede medir: <strong>voltaje en alterna y continua, intensidad en continua, diodos y continuidad</strong>. Algunos modelos también pueden medir temperatura con una sonda (depende del modelo).</p>
+
+  <h3>Pilas en serie</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔋</div>
+      <div class="card-title">Dos pilas una detrás de la otra</div>
+      <div class="card-value">3 Vcc</div>
+      <div class="card-sub">Asociación en serie</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎵</div>
+      <div class="card-title">Señal de audio a 0 dBu</div>
+      <div class="card-value">≈ 0,775 Vac</div>
+      <div class="card-sub">Medición en voltios alterna (Vac) — aunque ligeramente menor</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 3 — Crimpado y redes
+═══════════════════════════════════════ -->
+<section class="page" id="p3">
+  <div class="page-eyebrow">Práctica 3</div>
+  <h2>Crimpado y redes</h2>
+  <hr class="page-divider">
+
+  <h3>El cable de red</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <div class="card-title">Conector</div>
+      <div class="card-value">RJ-45</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <div class="card-title">Tipo de cable</div>
+      <div class="card-value">UTP</div>
+      <div class="card-sub">Unshielded Twisted Pair (par trenzado no blindado)</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧵</div>
+      <div class="card-title">Conductores</div>
+      <div class="card-value">8 hilos</div>
+      <div class="card-sub">trenzados de dos en dos</div>
+    </div>
+  </div>
+
+  <h4>Colores de los cables de datos</h4>
+  <div class="color-strip">
+    <div class="color-swatch"><div class="swatch-dot" style="background:#e06020;"></div>Naranja</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#fff;border-color:#e06020;"></div>Blanco-Naranja</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#2a8a2a;"></div>Verde</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#fff;border-color:#2a8a2a;"></div>Blanco-Verde</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#1a5ca8;"></div>Azul</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#fff;border-color:#1a5ca8;"></div>Blanco-Azul</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#7a4020;"></div>Marrón</div>
+    <div class="color-swatch"><div class="swatch-dot" style="background:#fff;border-color:#7a4020;"></div>Blanco-Marrón</div>
+  </div>
+  <div class="info-box">
+    La asociación de un hilo conductor de un color y el hilo conductor con una línea blanca se llama <strong>par trenzado</strong>.
+  </div>
+  <div class="warn-box">
+    ⚠️ Los conectores RJ-45 <strong>no se sueldan</strong>. Se crimpa mediante un alicate especial para este tipo de conector.
+  </div>
+
+  <h3>Proceso de crimpado — Normativa 568B</h3>
+  <ol class="steps-list">
+    <li>Quitar la cubierta exterior del cable entre <strong>3 y 4 cm</strong>, para dejar vistos los hilos conductores.</li>
+    <li>Eliminar la <strong>guía-cruceta de plástico</strong> que se encuentra en el centro del cable y que separa los pares.</li>
+    <li>Desenredar los hilos conductores y maniobrar individualmente con cada uno de ellos para dejarlos lo más rectos posible.</li>
+    <li>Ordenar los hilos según la normativa <strong>568B</strong> (de izquierda a derecha con el lado de los patines-conectores a la vista): <strong>blanco naranja, naranja, blanco verde, azul, blanco azul, verde, blanco marrón, marrón</strong>.</li>
+    <li>Cortar todos los hilos a <strong>1,5 cm</strong>, de manera que el final de los mismos quede a la misma altura.</li>
+    <li>Introducirlos en el conector con cuidado de que no se crucen, hasta el fondo.</li>
+    <li>Crimpar el conector asegurando que la <strong>cubierta exterior queda dentro del mismo</strong> para que quede sujeta al conector.</li>
+  </ol>
+
+  <h4>¿Qué hace el alicate al crimpar?</h4>
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">Acción 1</div>
+      <p>Empuja los <strong>8 patines-cuchillas</strong> de manera que estos entran en los hilos hasta el conductor de cobre, para realizar contacto eléctrico.</p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">Acción 2</div>
+      <p>Presiona y hunde una <strong>pestaña de plástico</strong> del conector hasta que este se encuentra con la funda exterior del cable.</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    En el cable que se realizó en la práctica, <strong>sí se cruzó algún hilo</strong>: se intercambiaron el verde y el azul.
+  </div>
+
+  <h3>Categorías de cable</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Categoría</th><th>Velocidad</th><th>Frecuencia</th><th>Cable habitual</th></tr>
+      <tr><td><strong>Cat 5</strong></td><td>100 Mbit/s</td><td>100 MHz</td><td>UTP</td></tr>
+      <tr><td><strong>Cat 6</strong></td><td>1 Gbit/s</td><td>250 MHz</td><td>UTP o FTP</td></tr>
+      <tr><td><strong>Cat 7</strong></td><td>10 Gbit/s</td><td>600 MHz</td><td>FTP o S/FTP</td></tr>
+    </table>
+  </div>
+  <p>Su diferencia es la <strong>velocidad de transferencia de datos</strong> y también el tipo de cable y conector para poder alcanzar ese ancho de banda.</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 4 — Construcción de micrófono
+═══════════════════════════════════════ -->
+<section class="page" id="p4">
+  <div class="page-eyebrow">Práctica 4</div>
+  <h2>Construcción de un micrófono</h2>
+  <hr class="page-divider">
+
+  <h3>Materiales usados</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Dos vasos de plástico grandes</span>
+    <span class="badge"><span class="badge-dot"></span>Hilo de cobre</span>
+    <span class="badge"><span class="badge-dot"></span>Un par de clips</span>
+    <span class="badge"><span class="badge-dot"></span>Imán de neodimio</span>
+    <span class="badge"><span class="badge-dot"></span>Celo</span>
+    <span class="badge"><span class="badge-dot"></span>Cilindro de plástico</span>
+    <span class="badge"><span class="badge-dot"></span>Cutter</span>
+    <span class="badge"><span class="badge-dot"></span>Consola de sonido (previo de micrófono)</span>
+  </div>
+
+  <h3>Proceso de construcción</h3>
+  <ol class="steps-list">
+    <li>En uno de los vasos se coloca el <strong>imán en el centro del exterior</strong> de la parte inferior y se fija con dos tiras de celo.</li>
+    <li>Se corta el otro vaso para permitir el acceso al fondo. Se hacen <strong>dos pequeños agujeros</strong> para dejar pasar los hilos de la bobina.</li>
+    <li>Se enrolla alrededor de un cilindro de <strong>1–2 cm aproximadamente de diámetro</strong> el hilo de cobre.</li>
+    <li>Ese arrollamiento se pega en la <strong>parte interior del fondo del vaso cortado, en su centro</strong>.</li>
+    <li>Finalmente se coloca el vaso sin cortar dentro del vaso cortado.</li>
+  </ol>
+
+  <h3>Elementos imprescindibles</h3>
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">🧲 Imán de neodimio</div>
+      <p>Genera el <strong>campo magnético</strong> necesario para la inducción.</p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">🔄 Arrollamiento de hilo de cobre</div>
+      <p>Bobina conductora que se mueve dentro del campo magnético.</p>
+    </div>
+  </div>
+  <div class="info-box">
+    Para crear un campo electromagnético es necesario que una bobina realizada con un material conductor se mueva <strong>perpendicularmente</strong> dentro, o en las inmediaciones de un campo magnético, que produce el imán.
+  </div>
+
+  <h4>¿Qué ocurría si se alejaban esos dos materiales?</h4>
+  <p>Comenzaba a <strong>disminuir el nivel de la señal</strong>, porque la bobina quedaba demasiado lejos del campo magnético producido por el imán y por tanto en el cobre no se inducía una corriente eléctrica.</p>
+
+  <h3>Equipo de escucha</h3>
+  <p>Se utilizó uno de los <strong>previos de una consola de sonido</strong>, cuya salida se había enviado a un <strong>altavoz autoamplificado</strong>.</p>
+
+  <h3>Principio físico de funcionamiento</h3>
+  <div class="process-box">
+    <div class="process-header">¿Por qué se podía oír lo que se hablaba?</div>
+    <div class="process-body">
+      <p>Cuando un conductor está dentro de un campo magnético y aquel se mueve perpendicular a las líneas de campo de este, <strong>se induce en el conductor una corriente que es proporcional al movimiento</strong>.</p>
+      <p style="margin-top:10px;">Las variaciones de presión creadas por la voz hacían que vibrase el fondo del vaso donde estaba el imán, y estas hacían que el imán se alejase y acercase con respecto a la bobina. Por tanto, la corriente que se creaba en el hilo de cobre era <strong>proporcional a esas vibraciones</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="card">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">Tipo de micrófono construido</div>
+      <div class="card-value">Dinámico de bobina</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 5 — Diagramas polares
+═══════════════════════════════════════ -->
+<section class="page" id="p5">
+  <div class="page-eyebrow">Práctica 5</div>
+  <h2>Diagramas polares del micrófono</h2>
+  <hr class="page-divider">
+
+  <h3>Objetivo</h3>
+  <p>Obtener los diagramas polares de un micrófono de condensador con tres diagramas polares distintos.</p>
+
+  <h3>Equipos y materiales</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Micrófono de condensador (3 diagramas polares)</span>
+    <span class="badge"><span class="badge-dot"></span>Altavoz autoamplificado</span>
+    <span class="badge"><span class="badge-dot"></span>Portátil + software SMAART</span>
+    <span class="badge"><span class="badge-dot"></span>Interface / tarjeta de sonido</span>
+    <span class="badge"><span class="badge-dot"></span>Móvil con app de brújula</span>
+    <span class="badge"><span class="badge-dot"></span>Soportes para micrófono y altavoz</span>
+  </div>
+
+  <h3>Proceso de medición</h3>
+  <ol class="steps-list">
+    <li>Colocar el micrófono y el altavoz enfrentados a <strong>1 metro de distancia</strong>. La cápsula del micrófono debe estar a la altura del reproductor de agudos del altavoz, aproximadamente a <strong>1,20 m</strong>.</li>
+    <li>Seleccionar uno de los <strong>diagramas polares</strong> en el micrófono.</li>
+    <li>Generar un tono puro de <strong>500 Hz</strong> desde el software, enviado al altavoz a través de una de las salidas del interface. La señal del micrófono vuelve a una de las entradas del interface y el software muestra el nivel en dBSPL.</li>
+    <li>Ajustar entrada y salida del interface hasta que el nivel de SPL tenga un valor redondo: <strong>80 dBSPL = 0 dB de referencia</strong>. A partir de este momento no se pueden modificar los niveles.</li>
+    <li>Colocar el móvil encima del micrófono con la brújula en <strong>0º</strong>. Anotar el nivel (será 0 dB).</li>
+    <li>Girar el conjunto (micrófono + móvil) <strong>15º hacia la izquierda</strong> y anotar el nivel recibido.</li>
+    <li>Repetir incrementando 15º en el mismo sentido hasta los <strong>180º</strong>: 0°, 15°, 30°, 45°, 60°, 75°, 90°, 105°, 120°, 135°, 150°, 165°, 180°.</li>
+    <li>Repetir todo el proceso para los <strong>tres diagramas polares</strong>.</li>
+  </ol>
+
+  <h3>Preguntas clave</h3>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿A qué distancia se colocó el micrófono del altavoz y por qué?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      <strong>1 metro.</strong> Porque es la distancia con la que se miden todas las características en electroacústica.
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Qué frecuencia se usó y por qué?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      <strong>500 Hz.</strong> Porque no es una frecuencia tan baja como para considerarla omnidireccional (y que todas las mediciones sean muy similares), ni tan alta como para que las variaciones sean grandes. También porque es una frecuencia menos molesta que la de 1 kHz que es la que habitualmente se usa en electroacústica.
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Qué nivel de dBSPL se consideró como 0 dB?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      <strong>80 dBSPL.</strong>
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Hasta cuántos grados se tomaron medidas y por qué?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      Hasta <strong>180°</strong>. Porque se supone que el diagrama polar del micrófono es simétrico, y por tanto los valores deben ser los mismos desde los 180° a los 360° que los obtenidos desde 0° a los 180°.
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Por qué la curva obtenida no es igual a la de la teoría?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      Las mediciones que caracterizan a un micrófono y que se adjuntan con cada uno de ellos se realizan en <strong>cámaras anecoicas</strong> donde no existen reflexiones de las paredes y por tanto el micrófono solo recibe la señal directa.<br><br>
+      En el taller esta situación no se produce y al micrófono llega la señal directa y algo después el <strong>rebote de alguna pared</strong> que estará o no en fase, produciéndose contribuciones de la señal constructivas o destructivas, respectivamente.
+    </div>
+  </div>
+
+  <h3>Diagramas polares obtenidos en la práctica</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">⭕</div>
+      <div class="card-title">1er diagrama</div>
+      <div class="card-value">Omnidireccional</div>
+      <div class="card-sub">Recibe por igual desde todas direcciones</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">❤️</div>
+      <div class="card-title">2º diagrama</div>
+      <div class="card-value">Cardioide</div>
+      <div class="card-sub">Mayor sensibilidad frontal, rechaza trasera</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔷</div>
+      <div class="card-title">3er diagrama</div>
+      <div class="card-value">Hipercardioide</div>
+      <div class="card-sub">Patrón más estrecho, pequeño lóbulo posterior</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 6 — Cobertura de altavoz
+═══════════════════════════════════════ -->
+<section class="page" id="p6">
+  <div class="page-eyebrow">Práctica 6</div>
+  <h2>Cobertura de un altavoz</h2>
+  <hr class="page-divider">
+
+  <h3>Objetivo</h3>
+  <p>Conocer el comportamiento de la cobertura de una caja de dos vías (altavoz), en función de la frecuencia, cuando se gira en el plano horizontal y en el vertical. Obtener las curvas correspondientes en función del ángulo de desviación con respecto al eje de escucha.</p>
+
+  <h3>Equipos utilizados</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Altavoz autoamplificado de dos vías</span>
+    <span class="badge"><span class="badge-dot"></span>Micrófono de medida</span>
+    <span class="badge"><span class="badge-dot"></span>Portátil + software SMAART</span>
+    <span class="badge"><span class="badge-dot"></span>Interface / tarjeta de sonido</span>
+    <span class="badge"><span class="badge-dot"></span>Móvil con app de brújula</span>
+    <span class="badge"><span class="badge-dot"></span>Soportes para micrófono y altavoz</span>
+  </div>
+
+  <h3>Proceso de obtención de la gráfica de cobertura</h3>
+  <ol class="steps-list">
+    <li>Colocar el micrófono y el altavoz enfrentados a <strong>1 metro de distancia</strong>. La cápsula del micrófono debe estar a la altura del reproductor de agudos del altavoz, aproximadamente a <strong>1,20 m</strong>.</li>
+    <li>Generar un tono puro de <strong>100 Hz</strong> desde el software, enviado al altavoz. Ajustar hasta <strong>80 dBSPL = 0 dB de referencia</strong>. A partir de este momento no se pueden modificar los niveles.</li>
+    <li>Colocar el móvil encima del altavoz con la brújula en <strong>0º</strong>.</li>
+    <li>Girar el conjunto (altavoz + brújula) hacia la izquierda hasta que el nivel recibido caiga <strong>6 dB</strong> con respecto al nivel de partida, o hasta que se llegue a un ángulo de 180°. Anotar el valor de los grados.</li>
+    <li>Volver a la posición de partida y repetir con distintos tonos puros: <strong>200 Hz, 500 Hz, 750 Hz, 1 kHz, 2 kHz, 5 kHz, 10 kHz, 15 kHz, 20 kHz</strong>.</li>
+    <li>El valor de cobertura será el ángulo anotado <strong>multiplicado por dos</strong>, ya que solo se ha movido el altavoz en un sentido (izquierda) y se supone que la fuente es simétrica.</li>
+    <li>Repetir todo el proceso con el altavoz girado <strong>90 grados</strong> (tumbado) para obtener la cobertura en el plano vertical.</li>
+  </ol>
+
+  <h3>Preguntas clave</h3>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Cuántos dB debe caer la señal?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer"><strong>6 dB de SPL.</strong></div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Lo normal es que a mayor frecuencia el ángulo de cobertura sea más estrecho?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer"><strong>Sí.</strong></div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Se cumplió esa premisa? Si no fue así, ¿a qué se debió?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      Las mediciones que caracterizan a un altavoz se realizan en <strong>cámaras anecoicas</strong> donde no existen reflexiones de las paredes y por tanto el micrófono solo recibe la señal directa.<br><br>
+      En el taller esta situación no se produce y al micrófono llega la señal directa y algo después el <strong>rebote de alguna pared</strong> que estará o no en fase, produciéndose contribuciones constructivas o destructivas.
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Por qué son diferentes las gráficas de cobertura horizontal y vertical?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      Porque el <strong>reproductor de agudos tiene una bocina</strong> para tener mayor cobertura (mayor dispersión) del sonido en el plano horizontal cuando el altavoz está en vertical.
+    </div>
+  </div>
+  <div class="qa-block">
+    <div class="qa-question" onclick="toggleQA(this)">
+      <span>¿Por qué se multiplica por dos el ángulo anotado?</span><span class="qa-toggle">▼</span>
+    </div>
+    <div class="qa-answer">
+      Porque solo se gira el altavoz hasta los 180°, ya que se supone que la cobertura del altavoz es simétrica. Por tanto los valores deben ser los mismos desde los 180° a los 360° que los obtenidos desde 0° a los 180°.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 7 — Impedancia del altavoz
+═══════════════════════════════════════ -->
+<section class="page" id="p7">
+  <div class="page-eyebrow">Práctica 7</div>
+  <h2>Impedancia de un altavoz</h2>
+  <hr class="page-divider">
+
+  <h3>Objetivo</h3>
+  <p>Obtener las curvas de impedancia de un subwoofer, un woofer y un tweeter, identificando la frecuencia de resonancia de cada uno de ellos, a partir de la cual se utilizarán para reproducir esas frecuencias.</p>
+
+  <h3>Equipos utilizados</h3>
+  <div class="badge-strip">
+    <span class="badge"><span class="badge-dot"></span>Subwoofer, woofer y tweeter</span>
+    <span class="badge"><span class="badge-dot"></span>Portátil + software SMAART</span>
+    <span class="badge"><span class="badge-dot"></span>Interface / tarjeta de sonido</span>
+    <span class="badge"><span class="badge-dot"></span>Amplificador de audio</span>
+    <span class="badge"><span class="badge-dot"></span>Dos polímetros (voltímetro + amperímetro)</span>
+  </div>
+
+  <h3>Proceso de medición</h3>
+  <ol class="steps-list">
+    <li>Generar tonos puros desde el software desde <strong>20 Hz hasta 20 kHz</strong>: 20, 40, 60, 80, 100, 200, 500 Hz, 1 kHz, 2 kHz, 5 kHz, 10 kHz, 15 kHz, 20 kHz. Se envían al amplificador a través de una de las salidas del interface.</li>
+    <li>Conectar el altavoz a la salida del amplificador.</li>
+    <li>Para cada frecuencia, obtener la <strong>tensión</strong> (voltímetro) y la <strong>intensidad</strong> (amperímetro). Reflejar los valores en una tabla.</li>
+    <li>Mediante la <strong>Ley de Ohm</strong>, obtener la resistencia (impedancia) dividiendo la tensión entre la intensidad: <strong>Z = V / I</strong>.</li>
+    <li>Repetir el proceso para el <strong>subwoofer, el woofer y el tweeter</strong>.</li>
+  </ol>
+
+  <h3>Conexión de los polímetros</h3>
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">Voltímetro (tensión)</div>
+      <p>Conectado en <strong>paralelo</strong> con respecto al altavoz y a la salida del amplificador.</p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">Amperímetro (intensidad)</div>
+      <p>Conectado en <strong>serie</strong> con respecto al altavoz y a la salida del amplificador.</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    La palabra <strong>"impedancia"</strong> tiene sentido cuando se usa en corriente <strong>alterna</strong>.
+  </div>
+
+  <h3>Frecuencias de resonancia y márgenes de uso</h3>
+  <div class="resonance-grid">
+    <div class="res-card">
+      <div class="res-card-name">🔊 Subwoofer</div>
+      <div class="res-card-freq">40</div>
+      <div class="res-card-unit">Hz — resonancia</div>
+    </div>
+    <div class="res-card">
+      <div class="res-card-name">🔉 Woofer</div>
+      <div class="res-card-freq">100</div>
+      <div class="res-card-unit">Hz — resonancia</div>
+      <div class="res-card-range">Uso: aprox. 200 Hz – 2 kHz</div>
+    </div>
+    <div class="res-card">
+      <div class="res-card-name">🔈 Tweeter</div>
+      <div class="res-card-freq">2</div>
+      <div class="res-card-unit">kHz — resonancia</div>
+      <div class="res-card-range">Uso: aprox. 2 kHz – 20 kHz</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRÁCTICA 8 — Filtros pasivos
+═══════════════════════════════════════ -->
+<section class="page" id="p8">
+  <div class="page-eyebrow">Práctica 8</div>
+  <h2>Filtros pasivos</h2>
+  <hr class="page-divider">
+
+  <h3>Objetivo</h3>
+  <p>Calcular y obtener el valor de las bobinas y condensadores necesarios para realizar el <strong>filtro paso alto y paso bajo</strong>, o filtro de cruce, que se usarán en la fabricación de los altavoces de dos vías que se construirá en la última práctica.</p>
+
+  <h3>Punto de partida</h3>
+  <div class="info-box">
+    Se partió de las <strong>gráficas de impedancia del subwoofer, el woofer y el tweeter</strong> (práctica 7) para conocer la frecuencia de cruce del filtro.
+  </div>
+
+  <h3>Datos del filtro calculado</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">〰️</div>
+      <div class="card-title">Frecuencia de cruce</div>
+      <div class="card-value">2,5 kHz</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📐</div>
+      <div class="card-title">Orden del filtro</div>
+      <div class="card-value">2º orden</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Valor del condensador</div>
+      <div class="card-value">4,7 µF</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔁</div>
+      <div class="card-title">Valor de la bobina</div>
+      <div class="card-value">1 mH</div>
+    </div>
+  </div>
+
+  <h3>¿Qué hace cada filtro?</h3>
+  <div class="highlight-2col">
+    <div class="hbox">
+      <div class="hbox-title">Filtro paso bajo → Woofer</div>
+      <p>Deja pasar las frecuencias <strong>por debajo</strong> de la frecuencia de cruce (2,5 kHz). Bloquea las agudas.</p>
+    </div>
+    <div class="hbox">
+      <div class="hbox-title">Filtro paso alto → Tweeter</div>
+      <p>Deja pasar las frecuencias <strong>por encima</strong> de la frecuencia de cruce (2,5 kHz). Bloquea las graves.</p>
+    </div>
+  </div>
+  <div class="info-box">
+    Juntos forman el <strong>filtro de cruce (crossover)</strong>, que divide la señal entre woofer y tweeter para que cada uno reproduzca la banda de frecuencias para la que está optimizado.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEST 1 — Prácticas 1–2
+═══════════════════════════════════════ -->
+<section class="page" id="t1">
+  <div class="page-eyebrow">Test 1</div>
+  <h2>Test: Prácticas 1 y 2</h2>
+  <hr class="page-divider">
+  <p style="color:var(--ink3);font-size:0.9rem;margin-bottom:20px;">Conectores, soldadura y componentes electrónicos.</p>
+  <div id="quiz-t1"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEST 2 — Prácticas 3–4
+═══════════════════════════════════════ -->
+<section class="page" id="t2">
+  <div class="page-eyebrow">Test 2</div>
+  <h2>Test: Prácticas 3 y 4</h2>
+  <hr class="page-divider">
+  <p style="color:var(--ink3);font-size:0.9rem;margin-bottom:20px;">Crimpado, redes de datos y construcción de micrófono.</p>
+  <div id="quiz-t2"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEST 3 — Prácticas 5–6
+═══════════════════════════════════════ -->
+<section class="page" id="t3">
+  <div class="page-eyebrow">Test 3</div>
+  <h2>Test: Prácticas 5 y 6</h2>
+  <hr class="page-divider">
+  <p style="color:var(--ink3);font-size:0.9rem;margin-bottom:20px;">Diagramas polares y cobertura de altavoz.</p>
+  <div id="quiz-t3"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEST 4 — Prácticas 7–8
+═══════════════════════════════════════ -->
+<section class="page" id="t4">
+  <div class="page-eyebrow">Test 4</div>
+  <h2>Test: Prácticas 7 y 8</h2>
+  <hr class="page-divider">
+  <p style="color:var(--ink3);font-size:0.9rem;margin-bottom:20px;">Impedancia de altavoz y filtros pasivos.</p>
+  <div id="quiz-t4"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEST 5 — General
+═══════════════════════════════════════ -->
+<section class="page" id="t5">
+  <div class="page-eyebrow">Test General</div>
+  <h2>Test General</h2>
+  <hr class="page-divider">
+  <p style="color:var(--ink3);font-size:0.9rem;margin-bottom:20px;">Preguntas mezcladas de las 8 prácticas.</p>
+  <div id="quiz-t5"></div>
+</section>
+
+</main>
+
+<script>
+// ─── NAVIGATION ────────────────────────────────────────
+function show(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  closeSidebar();
+  window.scrollTo(0, 0);
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('active');
+}
+
+function closeSidebar() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+  }
+}
+
+function toggleQA(el) {
+  const ans = el.nextElementSibling;
+  const tog = el.querySelector('.qa-toggle');
+  const isOpen = ans.classList.contains('open');
+  ans.classList.toggle('open');
+  tog.textContent = isOpen ? '▼' : '▲';
+  tog.classList.toggle('open', !isOpen);
+}
+
+// ─── QUIZ ENGINE ───────────────────────────────────────
+const quizState = {};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initQuiz(containerId, questions) {
+  quizState[containerId] = {
+    questions: shuffle([...questions]),
+    current: 0,
+    score: 0,
+    answered: false
+  };
+  renderQuestion(containerId);
+}
+
+function renderQuestion(cid) {
+  const s = quizState[cid];
+  const q = s.questions[s.current];
+  const total = s.questions.length;
+  const shuffled = shuffle(q.options);
+
+  document.getElementById(cid).innerHTML = `
+    <div class="test-wrap">
+      <div class="q-counter">Pregunta ${s.current + 1} de ${total}</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${(s.current / total) * 100}%"></div>
+      </div>
+      <div class="question-text">${q.question}</div>
+      <div class="options" id="${cid}-opts">
+        ${shuffled.map(opt => `
+          <button class="option-btn"
+            onclick="selectOption('${cid}', this, ${opt.correct}, ${JSON.stringify(q.explanation)})">
+            ${opt.text}
+          </button>`).join('')}
+      </div>
+      <div class="explanation" id="${cid}-exp"></div>
+      <div class="nav-btns">
+        <span style="font-size:0.8rem;color:var(--ink3)">✓ ${s.score} correctas</span>
+        <button class="btn" id="${cid}-next" style="display:none"
+          onclick="nextQuestion('${cid}')">
+          ${s.current + 1 < total ? 'Siguiente →' : 'Ver resultado'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function selectOption(cid, btn, isCorrect, explanation) {
+  const s = quizState[cid];
+  if (s.answered) return;
+  s.answered = true;
+
+  const opts = document.querySelectorAll(`#${cid}-opts .option-btn`);
+  opts.forEach(b => { b.disabled = true; });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    s.score++;
+  } else {
+    btn.classList.add('wrong');
+    opts.forEach(b => {
+      if (b !== btn && b.getAttribute('onclick') && b.getAttribute('onclick').includes('true')) {
+        b.classList.add('correct');
+      }
+    });
+  }
+
+  const expEl = document.getElementById(`${cid}-exp`);
+  expEl.textContent = explanation;
+  expEl.classList.add('show');
+  document.getElementById(`${cid}-next`).style.display = 'block';
+}
+
+function nextQuestion(cid) {
+  const s = quizState[cid];
+  s.current++;
+  s.answered = false;
+  if (s.current >= s.questions.length) {
+    showScore(cid);
+  } else {
+    renderQuestion(cid);
+  }
+}
+
+function showScore(cid) {
+  const s = quizState[cid];
+  const pct = Math.round((s.score / s.questions.length) * 100);
+  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚';
+  document.getElementById(cid).innerHTML = `
+    <div class="test-wrap">
+      <div class="score-box">
+        <div style="font-size:2.5rem;margin-bottom:10px;">${emoji}</div>
+        <div class="score-number">${s.score} / ${s.questions.length}</div>
+        <div class="score-label">${pct}% de respuestas correctas</div>
+        <div style="margin-top:22px;">
+          <button class="btn" onclick="restartQuiz('${cid}')">Repetir test</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function restartQuiz(cid) {
+  const s = quizState[cid];
+  s.current = 0;
+  s.score = 0;
+  s.answered = false;
+  s.questions = shuffle(s.questions);
+  renderQuestion(cid);
+}
+
+// ─── PREGUNTAS T1 (Prácticas 1–2) ─────────────────────
+const questionsT1 = [
+  {
+    question: "¿A qué distancia aproximada de la punta del soldador debe colocarse el hilo de estaño?",
+    options: [
+      { text: "Aproximadamente a 4 mm", correct: true },
+      { text: "Aproximadamente a 1 cm", correct: false },
+      { text: "Directamente sobre la punta del soldador", correct: false },
+      { text: "Aproximadamente a 2 cm", correct: false }
+    ],
+    explanation: "El hilo de estaño debe colocarse aproximadamente a 4 mm de la punta del soldador para una soldadura correcta."
+  },
+  {
+    question: "¿Por qué se estañan previamente las dos partes antes de soldarlas?",
+    options: [
+      { text: "Para facilitar la posterior soldadura entre ambas partes", correct: true },
+      { text: "Para que el cobre no se oxide durante el proceso", correct: false },
+      { text: "Para reducir la resistencia eléctrica del conductor", correct: false },
+      { text: "Para aumentar la temperatura de fusión del estaño", correct: false }
+    ],
+    explanation: "Se estañan previamente para facilitar la posterior soldadura entre ambas partes."
+  },
+  {
+    question: "¿Qué señal lleva el pin 2 de un conector XLR?",
+    options: [
+      { text: "Señal positiva (caliente)", correct: true },
+      { text: "Señal negativa (frío)", correct: false },
+      { text: "Malla (tierra)", correct: false },
+      { text: "Alimentación phantom +48V", correct: false }
+    ],
+    explanation: "El pin 2 transporta la señal positiva (caliente). El pin 1 es la malla y el pin 3 es el frío."
+  },
+  {
+    question: "Visto desde atrás (donde se suelda), ¿qué posición ocupa el pin 2 en el XLR macho?",
+    options: [
+      { text: "Superior izquierda", correct: true },
+      { text: "Superior derecha", correct: false },
+      { text: "Inferior centro", correct: false },
+      { text: "Inferior izquierda", correct: false }
+    ],
+    explanation: "En el XLR macho visto desde atrás: pin 2 (positivo) en superior izquierda, pin 1 (malla) en superior derecha, pin 3 (frío) en inferior centro."
+  },
+  {
+    question: "¿Existe diferencia entre el XLR macho y el XLR hembra vistos desde atrás?",
+    options: [
+      { text: "Sí: los pines están invertidos entre sí, aunque los números se mantienen", correct: true },
+      { text: "No: la posición de los pines es exactamente igual en ambos", correct: false },
+      { text: "Sí: el número de pines es diferente en cada conector", correct: false },
+      { text: "Sí: solo el pin 3 cambia de posición entre macho y hembra", correct: false }
+    ],
+    explanation: "Los pines están invertidos entre macho y hembra, aunque los números de los pines se mantienen. El pin 3 (frío/negativo) siempre queda en el inferior centro en ambos."
+  },
+  {
+    question: "¿Cuántos conductores componen un cable balanceado?",
+    options: [
+      { text: "Tres", correct: true },
+      { text: "Dos", correct: false },
+      { text: "Cuatro", correct: false },
+      { text: "Uno (el hilo de señal más la malla exterior)", correct: false }
+    ],
+    explanation: "Un cable balanceado tiene tres conductores: señal positiva, señal negativa y malla."
+  },
+  {
+    question: "¿Qué cable se suelda al anillo intermedio de un TRS cuando se usa con señal balanceada?",
+    options: [
+      { text: "El cable frío o negativo (–)", correct: true },
+      { text: "El canal derecho", correct: false },
+      { text: "La malla de tierra", correct: false },
+      { text: "El cable positivo (+)", correct: false }
+    ],
+    explanation: "Con señal balanceada, el ring (anillo intermedio) lleva el cable frío o negativo. Con señal estéreo llevaría el canal derecho."
+  },
+  {
+    question: "¿Cuántas bandas de colores tenían las resistencias usadas en la práctica 2?",
+    options: [
+      { text: "Cuatro", correct: true },
+      { text: "Tres", correct: false },
+      { text: "Cinco", correct: false },
+      { text: "Seis", correct: false }
+    ],
+    explanation: "Las resistencias usadas en la práctica tenían cuatro bandas de colores."
+  },
+  {
+    question: "Para medir 100 Ω con el polímetro, ¿qué escala se debe seleccionar?",
+    options: [
+      { text: "El valor mayor más cercano (200 Ω)", correct: true },
+      { text: "El valor exacto de 100 Ω si existe esa escala", correct: false },
+      { text: "El valor inferior más cercano (50 Ω)", correct: false },
+      { text: "La escala más alta disponible siempre", correct: false }
+    ],
+    explanation: "Siempre se selecciona el valor mayor más cercano. Para 100 Ω se seleccionaría la escala de 200 Ω."
+  },
+  {
+    question: "En asociación en paralelo con gran diferencia de valores, ¿hacia qué valor tiende la resistencia total?",
+    options: [
+      { text: "Al valor menor", correct: true },
+      { text: "Al valor mayor", correct: false },
+      { text: "Al valor promedio de todas", correct: false },
+      { text: "A la suma aritmética exacta", correct: false }
+    ],
+    explanation: "En paralelo, cuando hay gran diferencia de valores, la resistencia total tiende al valor menor. En serie sería al contrario (tiende al mayor)."
+  },
+  {
+    question: "¿Qué valor en Vac da la medición de una señal de 0 dBu?",
+    options: [
+      { text: "Un valor próximo a 0,775 Vac, aunque ligeramente menor", correct: true },
+      { text: "0,5 Vac exactos", correct: false },
+      { text: "1 Vac exacto", correct: false },
+      { text: "2,83 Vac (valor de pico)", correct: false }
+    ],
+    explanation: "0 dBu equivale a 0,775 Vac. En la práctica el valor medido era próximo pero ligeramente menor."
+  },
+  {
+    question: "Dos pilas colocadas una detrás de la otra, ¿qué tensión dan y qué tipo de asociación es?",
+    options: [
+      { text: "3 Vcc — asociación en serie", correct: true },
+      { text: "1,5 Vcc — asociación en paralelo", correct: false },
+      { text: "6 Vcc — asociación en serie", correct: false },
+      { text: "3 Vcc — asociación en paralelo", correct: false }
+    ],
+    explanation: "Colocar dos pilas una detrás de la otra es una asociación en serie, que suma las tensiones: 1,5 V + 1,5 V = 3 Vcc."
+  }
+];
+
+// ─── PREGUNTAS T2 (Prácticas 3–4) ─────────────────────
+const questionsT2 = [
+  {
+    question: "¿Cómo se denominan los conectores que usan los cables de redes de datos?",
+    options: [
+      { text: "RJ-45", correct: true },
+      { text: "RJ-11", correct: false },
+      { text: "USB tipo B", correct: false },
+      { text: "BNC", correct: false }
+    ],
+    explanation: "Los conectores de los cables de red de datos se denominan RJ-45."
+  },
+  {
+    question: "¿De qué tipo era el cable usado en la práctica de crimpado?",
+    options: [
+      { text: "UTP — Unshielded Twisted Pair (par trenzado no blindado)", correct: true },
+      { text: "FTP — Foiled Twisted Pair (par trenzado apantallado)", correct: false },
+      { text: "STP — Shielded Twisted Pair (par trenzado blindado)", correct: false },
+      { text: "Coaxial con núcleo de cobre sólido", correct: false }
+    ],
+    explanation: "El cable usado era UTP: Unshielded Twisted Pair, par trenzado no blindado."
+  },
+  {
+    question: "¿Cuántos hilos conductores componen un cable de datos?",
+    options: [
+      { text: "8 cables trenzados de dos en dos", correct: true },
+      { text: "4 hilos (2 pares trenzados)", correct: false },
+      { text: "6 hilos (3 pares trenzados)", correct: false },
+      { text: "2 hilos (señal y masa)", correct: false }
+    ],
+    explanation: "Un cable de datos tiene 8 cables trenzados de dos en dos, formando 4 pares."
+  },
+  {
+    question: "¿Por qué los conectores RJ-45 no se sueldan?",
+    options: [
+      { text: "Porque se crimpa mediante un alicate especial para este tipo de conector", correct: true },
+      { text: "Porque el plástico del conector no resiste el calor del soldador", correct: false },
+      { text: "Porque la soldadura aumenta la resistencia eléctrica de los pines", correct: false },
+      { text: "Porque el estaño es incompatible con el cobre de los conductores UTP", correct: false }
+    ],
+    explanation: "Los conectores RJ-45 no se sueldan; se crimpa mediante un alicate especial de crimpado."
+  },
+  {
+    question: "¿En qué orden se colocan los hilos según la normativa 568B (de izquierda a derecha)?",
+    options: [
+      { text: "Blanco naranja, naranja, blanco verde, azul, blanco azul, verde, blanco marrón, marrón", correct: true },
+      { text: "Naranja, blanco naranja, verde, blanco verde, azul, blanco azul, marrón, blanco marrón", correct: false },
+      { text: "Blanco verde, verde, blanco naranja, azul, blanco azul, naranja, blanco marrón, marrón", correct: false },
+      { text: "Azul, blanco azul, naranja, blanco naranja, verde, blanco verde, marrón, blanco marrón", correct: false }
+    ],
+    explanation: "La normativa 568B establece: blanco naranja, naranja, blanco verde, azul, blanco azul, verde, blanco marrón, marrón."
+  },
+  {
+    question: "¿A cuántos cm se deben cortar los hilos antes de introducirlos en el conector RJ-45?",
+    options: [
+      { text: "A 1,5 cm, de manera que queden a la misma altura", correct: true },
+      { text: "A 3–4 cm del final", correct: false },
+      { text: "A 5 mm del extremo de la funda", correct: false },
+      { text: "Al ras de la funda exterior sin margen", correct: false }
+    ],
+    explanation: "Los hilos se cortan a 1,5 cm para que todos queden a la misma altura antes de introducirlos en el conector."
+  },
+  {
+    question: "¿Cuántas maniobras realiza el alicate de crimpado al cerrar sobre el conector?",
+    options: [
+      { text: "Dos: empuja los 8 patines-cuchillas hasta el cobre, y hunde la pestaña que sujeta la funda", correct: true },
+      { text: "Una: suelda los pines contra el conductor de cobre", correct: false },
+      { text: "Tres: corta, remata y comprime la funda exterior del cable", correct: false },
+      { text: "Dos: estañar los hilos y fijar el conector con una abrazadera interna", correct: false }
+    ],
+    explanation: "El alicate realiza dos maniobras: empuja los 8 patines-cuchillas hasta el conductor de cobre (contacto eléctrico) y hunde una pestaña de plástico que sujeta la funda exterior del cable."
+  },
+  {
+    question: "¿Cuáles son los dos elementos absolutamente necesarios para que el micrófono dinámico funcione?",
+    options: [
+      { text: "El imán de neodimio y el arrollamiento de hilo de cobre (bobina)", correct: true },
+      { text: "El vaso de plástico y el hilo de cobre", correct: false },
+      { text: "Los clips y el cilindro de plástico", correct: false },
+      { text: "La consola de sonido y el altavoz autoamplificado", correct: false }
+    ],
+    explanation: "El imán y el arrollamiento de hilo de cobre son absolutamente necesarios: sin campo magnético y bobina no hay inducción electromagnética."
+  },
+  {
+    question: "¿Qué ocurría si se alejaban el imán y la bobina durante la construcción del micrófono?",
+    options: [
+      { text: "El nivel de la señal disminuía porque la bobina quedaba fuera del campo magnético", correct: true },
+      { text: "La señal aumentaba por efecto de reflexión del campo magnético", correct: false },
+      { text: "No ocurría nada: el campo magnético del neodimio tiene alcance ilimitado", correct: false },
+      { text: "El sonido se distorsionaba pero el nivel se mantenía igual", correct: false }
+    ],
+    explanation: "Comenzaba a disminuir el nivel de la señal, porque la bobina quedaba demasiado lejos del campo magnético producido por el imán y por tanto en el cobre no se inducía una corriente eléctrica."
+  },
+  {
+    question: "¿Qué tipo de micrófono se construyó en la práctica 4?",
+    options: [
+      { text: "Dinámico de bobina", correct: true },
+      { text: "Condensador de electret", correct: false },
+      { text: "Piezoeléctrico de contacto", correct: false },
+      { text: "Ribbon (cinta)", correct: false }
+    ],
+    explanation: "Se construyó un micrófono dinámico de bobina, basado en el principio de inducción electromagnética."
+  }
+];
+
+// ─── PREGUNTAS T3 (Prácticas 5–6) ─────────────────────
+const questionsT3 = [
+  {
+    question: "¿A qué distancia se colocó el micrófono del altavoz en la práctica 5 y por qué?",
+    options: [
+      { text: "1 metro, porque es la distancia estándar para medir características en electroacústica", correct: true },
+      { text: "2 metros, para evitar la distorsión por proximidad del micrófono", correct: false },
+      { text: "50 cm, por razones prácticas de espacio en el taller", correct: false },
+      { text: "1,20 metros, para alinear la cápsula con el reproductor de agudos", correct: false }
+    ],
+    explanation: "1 metro es la distancia con la que se miden todas las características en electroacústica. Los 1,20 m es la altura a la que se coloca la cápsula, no la distancia entre micrófono y altavoz."
+  },
+  {
+    question: "¿Por qué se usó 500 Hz como frecuencia de medición en los diagramas polares?",
+    options: [
+      { text: "No es tan baja como para ser omnidireccional ni tan alta para tener variaciones excesivas, y es menos molesta que 1 kHz", correct: true },
+      { text: "Porque a 500 Hz todos los micrófonos muestran su patrón más definido y reproducible", correct: false },
+      { text: "Porque 500 Hz es la frecuencia fundamental de la voz humana masculina", correct: false },
+      { text: "Porque el software SMAART solo puede generar tonos en múltiplos de 500 Hz", correct: false }
+    ],
+    explanation: "500 Hz no es tan baja como para ser prácticamente omnidireccional, ni tan alta como para que las variaciones sean excesivas. Además es menos molesta que el 1 kHz habitual en electroacústica."
+  },
+  {
+    question: "¿Qué nivel de dBSPL se tomó como referencia (0 dB) en la práctica de diagramas polares?",
+    options: [
+      { text: "80 dBSPL", correct: true },
+      { text: "70 dBSPL", correct: false },
+      { text: "94 dBSPL", correct: false },
+      { text: "60 dBSPL", correct: false }
+    ],
+    explanation: "Se ajustó el nivel a 80 dBSPL, que desde ese momento se tomó como 0 dB de referencia. A partir de ese momento no se podían modificar los niveles."
+  },
+  {
+    question: "¿Hasta cuántos grados se tomaron medidas en la práctica de diagramas polares?",
+    options: [
+      { text: "180°, porque el diagrama polar se supone simétrico", correct: true },
+      { text: "360°, para obtener el diagrama completo directamente", correct: false },
+      { text: "90°, porque más allá el micrófono pierde toda sensibilidad", correct: false },
+      { text: "270°, para cubrir tres cuartas partes del patrón", correct: false }
+    ],
+    explanation: "Solo hasta 180°, porque se supone que el diagrama polar del micrófono es simétrico: los valores de 180° a 360° deben ser iguales a los de 0° a 180°."
+  },
+  {
+    question: "¿Por qué la curva del diagrama polar obtenida en el taller no coincide con la del fabricante?",
+    options: [
+      { text: "En el taller hay reflexiones de paredes que se suman a la señal directa, y pueden estar o no en fase", correct: true },
+      { text: "El software SMAART introduce errores a determinados ángulos de medición", correct: false },
+      { text: "El micrófono de condensador cambia su patrón con el paso del tiempo", correct: false },
+      { text: "La práctica se realizó sin girar exactamente 15° en cada paso", correct: false }
+    ],
+    explanation: "Las mediciones del fabricante se hacen en cámara anecoica. En el taller llega señal directa más rebotes de paredes, que pueden producir contribuciones constructivas o destructivas."
+  },
+  {
+    question: "¿Cuántos dB debe caer la señal para determinar el ángulo de cobertura en la práctica 6?",
+    options: [
+      { text: "6 dB de SPL", correct: true },
+      { text: "3 dB (punto medio de potencia)", correct: false },
+      { text: "10 dB", correct: false },
+      { text: "12 dB (pendiente de filtro de 2º orden)", correct: false }
+    ],
+    explanation: "El criterio estándar para el ángulo de cobertura es la caída de 6 dB de SPL respecto al nivel de referencia a 0°."
+  },
+  {
+    question: "¿Por qué se multiplica por dos el ángulo anotado en la práctica de cobertura del altavoz?",
+    options: [
+      { text: "Porque solo se ha girado el altavoz hacia la izquierda, y se supone que la cobertura es simétrica", correct: true },
+      { text: "Para compensar el error de medición del software a bajas frecuencias", correct: false },
+      { text: "Porque el altavoz se midió a 0,5 metros en lugar de 1 metro", correct: false },
+      { text: "Para convertir el ángulo de cobertura de campo directo a campo reverberante", correct: false }
+    ],
+    explanation: "Solo se gira el altavoz en un sentido (hacia la izquierda). Como la fuente se supone simétrica, el ángulo total de cobertura es el doble del ángulo anotado."
+  },
+  {
+    question: "¿Por qué son diferentes las gráficas de cobertura horizontal y vertical del altavoz?",
+    options: [
+      { text: "Porque el reproductor de agudos tiene una bocina que amplía la dispersión horizontal cuando el altavoz está en vertical", correct: true },
+      { text: "Porque el woofer y el tweeter tienen frecuencias de resonancia distintas entre sí", correct: false },
+      { text: "Porque el amplificador interno trata diferente las frecuencias según la orientación", correct: false },
+      { text: "Porque en la medición vertical se usó un micrófono de medición distinto", correct: false }
+    ],
+    explanation: "El tweeter tiene una bocina diseñada para aumentar la cobertura (dispersión) en el plano horizontal cuando el altavoz está orientado en vertical."
+  },
+  {
+    question: "¿Con qué instrumento se conocía la orientación exacta del micrófono o el altavoz durante las mediciones?",
+    options: [
+      { text: "Con un móvil con aplicación de brújula", correct: true },
+      { text: "Con un goniómetro de precisión fijado al soporte", correct: false },
+      { text: "Con marcas de referencia pintadas en el suelo del taller", correct: false },
+      { text: "Con un transportador de ángulos colocado en la base del soporte", correct: false }
+    ],
+    explanation: "Se utilizó un móvil con la aplicación de brújula abierta, colocado encima del micrófono o del altavoz, para conocer la orientación exacta en cada medición."
+  },
+  {
+    question: "¿A qué frecuencia inicial se realizó la práctica de cobertura del altavoz?",
+    options: [
+      { text: "100 Hz", correct: true },
+      { text: "500 Hz, la misma que en los diagramas polares", correct: false },
+      { text: "20 Hz, la frecuencia más baja del espectro audible", correct: false },
+      { text: "1 kHz, frecuencia de referencia en acústica", correct: false }
+    ],
+    explanation: "La práctica comenzó con un tono puro de 100 Hz, y continuó con: 200 Hz, 500 Hz, 750 Hz, 1 kHz, 2 kHz, 5 kHz, 10 kHz, 15 kHz, 20 kHz."
+  }
+];
+
+// ─── PREGUNTAS T4 (Prácticas 7–8) ─────────────────────
+const questionsT4 = [
+  {
+    question: "¿Cuál era el objetivo de la práctica de impedancia del altavoz?",
+    options: [
+      { text: "Obtener las curvas de impedancia e identificar la frecuencia de resonancia de cada altavoz", correct: true },
+      { text: "Medir la respuesta en frecuencia del altavoz en campo libre anecoico", correct: false },
+      { text: "Calcular la potencia máxima admisible de cada transductor", correct: false },
+      { text: "Comparar el rendimiento de distintos amplificadores a diferentes cargas", correct: false }
+    ],
+    explanation: "El objetivo era obtener las curvas de impedancia de un subwoofer, un woofer y un tweeter, identificando la frecuencia de resonancia de cada uno."
+  },
+  {
+    question: "¿Cómo se calcula la impedancia para cada frecuencia en la práctica 7?",
+    options: [
+      { text: "Dividiendo la tensión entre la intensidad: Z = V / I (Ley de Ohm)", correct: true },
+      { text: "Dividiendo la intensidad entre la tensión: Z = I / V", correct: false },
+      { text: "Sumando la tensión más la intensidad para cada frecuencia", correct: false },
+      { text: "Multiplicando la tensión por la intensidad para obtener la potencia", correct: false }
+    ],
+    explanation: "Mediante la Ley de Ohm: Z = V/I. Para cada frecuencia se mide la tensión y la intensidad, y se divide una entre otra."
+  },
+  {
+    question: "¿Cómo se conectó el voltímetro (el que medía tensión) en la práctica de impedancia?",
+    options: [
+      { text: "En paralelo con respecto al altavoz y la salida del amplificador", correct: true },
+      { text: "En serie con el altavoz y la salida del amplificador", correct: false },
+      { text: "Directamente entre los terminales del interface de audio", correct: false },
+      { text: "Entre la entrada y la salida del amplificador de potencia", correct: false }
+    ],
+    explanation: "El voltímetro (que medía tensión) se conectó en paralelo. El amperímetro (que medía intensidad) se conectó en serie."
+  },
+  {
+    question: "La palabra 'impedancia' tiene sentido cuando se usa en corriente…",
+    options: [
+      { text: "Alterna (AC)", correct: true },
+      { text: "Continua (DC)", correct: false },
+      { text: "Tanto continua como alterna, indistintamente", correct: false },
+      { text: "Pulsante o de forma cuadrada únicamente", correct: false }
+    ],
+    explanation: "La impedancia tiene sentido cuando se usa en corriente alterna. En continua se habla de resistencia, sin componentes reactivos."
+  },
+  {
+    question: "¿Cuál fue la frecuencia de resonancia del subwoofer medida en la práctica?",
+    options: [
+      { text: "40 Hz", correct: true },
+      { text: "100 Hz", correct: false },
+      { text: "2 kHz", correct: false },
+      { text: "20 Hz", correct: false }
+    ],
+    explanation: "La frecuencia de resonancia fue: subwoofer en 40 Hz, woofer en 100 Hz, tweeter en 2 kHz."
+  },
+  {
+    question: "¿En qué margen de frecuencias se podría usar el woofer según los resultados de la práctica?",
+    options: [
+      { text: "Aproximadamente entre 200 Hz y 2 kHz", correct: true },
+      { text: "Desde 20 Hz hasta 500 Hz aproximadamente", correct: false },
+      { text: "Aproximadamente entre 100 Hz y 10 kHz", correct: false },
+      { text: "Desde 40 Hz hasta 1 kHz aproximadamente", correct: false }
+    ],
+    explanation: "El woofer se usaría aproximadamente entre 200 Hz y 2 kHz, por encima de su frecuencia de resonancia (100 Hz) y hasta la del tweeter (2 kHz)."
+  },
+  {
+    question: "¿De qué gráficas se partió para elegir la frecuencia de cruce del filtro en la práctica 8?",
+    options: [
+      { text: "De las gráficas de impedancia del subwoofer, el woofer y el tweeter", correct: true },
+      { text: "De las gráficas de cobertura horizontal obtenidas en la práctica 6", correct: false },
+      { text: "De las gráficas de los diagramas polares del micrófono de la práctica 5", correct: false },
+      { text: "De las especificaciones técnicas del fabricante de los transductores", correct: false }
+    ],
+    explanation: "Se partió de las gráficas de impedancia obtenidas en la práctica 7 para conocer las frecuencias de resonancia y elegir la frecuencia de cruce del filtro."
+  },
+  {
+    question: "¿Cuál fue la frecuencia de cruce elegida en la práctica de filtros pasivos?",
+    options: [
+      { text: "2,5 kHz", correct: true },
+      { text: "2 kHz, coincidiendo con la resonancia del tweeter", correct: false },
+      { text: "1 kHz, frecuencia de referencia estándar en acústica", correct: false },
+      { text: "5 kHz, para dejar al woofer más margen de actuación", correct: false }
+    ],
+    explanation: "La frecuencia de cruce elegida fue 2,5 kHz, diseñando el filtro paso alto para el tweeter y el filtro paso bajo para el woofer."
+  },
+  {
+    question: "¿Qué valor de condensador se calculó para el filtro de cruce?",
+    options: [
+      { text: "4,7 µF", correct: true },
+      { text: "10 µF", correct: false },
+      { text: "47 µF", correct: false },
+      { text: "1 µF", correct: false }
+    ],
+    explanation: "El valor del condensador obtenido en la práctica fue de 4,7 µF."
+  },
+  {
+    question: "¿Cuál era el orden del filtro calculado en la práctica 8?",
+    options: [
+      { text: "2º orden", correct: true },
+      { text: "1er orden (6 dB/octava)", correct: false },
+      { text: "3er orden (18 dB/octava)", correct: false },
+      { text: "4º orden (24 dB/octava)", correct: false }
+    ],
+    explanation: "El filtro era de 2º orden. Los valores obtenidos fueron: condensador de 4,7 µF y bobina de 1 mH, para una frecuencia de cruce de 2,5 kHz."
+  }
+];
+
+// ─── PREGUNTAS T5 (General) ────────────────────────────
+const questionsT5 = [
+  {
+    question: "¿Qué herramienta se usó para verificar el funcionamiento del latiguillo XLR tras soldarlo?",
+    options: [
+      { text: "Un multímetro o polímetro", correct: true },
+      { text: "Un generador de señales de audio", correct: false },
+      { text: "El software SMAART conectado a un interface", correct: false },
+      { text: "Una consola de sonido en modo de medición", correct: false }
+    ],
+    explanation: "Se utilizó el multímetro/polímetro para verificar la continuidad y el correcto funcionamiento del latiguillo XLR soldado."
+  },
+  {
+    question: "¿Cuál es la diferencia principal entre los cables Cat 5, Cat 6 y Cat 7?",
+    options: [
+      { text: "La velocidad de transferencia de datos y el tipo de cable para alcanzar ese ancho de banda", correct: true },
+      { text: "El tipo de conector: RJ-45, RJ-11 y RJ-12 respectivamente", correct: false },
+      { text: "El número de pares trenzados dentro del cable", correct: false },
+      { text: "Solo el blindaje exterior: Cat 5 no tiene y Cat 6 y 7 sí siempre", correct: false }
+    ],
+    explanation: "La diferencia es la velocidad (100 Mbit/s, 1 Gbit/s, 10 Gbit/s) y la frecuencia (100 MHz, 250 MHz, 600 MHz), así como el tipo de cable para alcanzar ese ancho de banda."
+  },
+  {
+    question: "¿Qué principio físico explica el funcionamiento del micrófono dinámico de bobina construido?",
+    options: [
+      { text: "Inducción electromagnética: un conductor que se mueve en un campo magnético genera corriente eléctrica", correct: true },
+      { text: "Efecto piezoeléctrico: la presión deforma un cristal generando tensión eléctrica", correct: false },
+      { text: "Variación de capacitancia entre dos placas por efecto de la presión sonora", correct: false },
+      { text: "Efecto Seebeck: la diferencia de temperatura genera tensión entre dos materiales", correct: false }
+    ],
+    explanation: "Un conductor (la bobina) que se mueve perpendicularmente en un campo magnético (el imán) induce una corriente eléctrica proporcional al movimiento. Este es el principio del micrófono dinámico de bobina."
+  },
+  {
+    question: "¿Qué pin lleva la malla (tierra) en un conector XLR?",
+    options: [
+      { text: "Pin 1", correct: true },
+      { text: "Pin 2", correct: false },
+      { text: "Pin 3", correct: false },
+      { text: "El pin depende del tipo: macho o hembra", correct: false }
+    ],
+    explanation: "El pin 1 siempre es la malla (tierra), independientemente de si el conector es macho o hembra."
+  },
+  {
+    question: "¿Cuál fue la frecuencia de resonancia del tweeter medida en la práctica 7?",
+    options: [
+      { text: "2 kHz", correct: true },
+      { text: "40 Hz", correct: false },
+      { text: "100 Hz", correct: false },
+      { text: "500 Hz", correct: false }
+    ],
+    explanation: "La frecuencia de resonancia del tweeter fue de 2 kHz. El subwoofer fue 40 Hz y el woofer 100 Hz."
+  },
+  {
+    question: "¿Cuántos conductores compone un cable balanceado y cuáles son sus colores habituales?",
+    options: [
+      { text: "Tres: rojo (o un color) para positivo, negro o transparente para negativo, y la trenza para malla", correct: true },
+      { text: "Dos: rojo para positivo y negro para negativo (sin malla)", correct: false },
+      { text: "Cuatro: dos para señal, uno para malla y uno para alimentación phantom", correct: false },
+      { text: "Tres: azul para positivo, blanco para negativo y negro para malla", correct: false }
+    ],
+    explanation: "Un cable balanceado tiene 3 conductores: señal positiva (rojo o de un color), señal negativa (negro o transparente) y malla (trenza exterior)."
+  },
+  {
+    question: "En la práctica de crimpado, ¿se cruzó algún hilo al realizar el cable?",
+    options: [
+      { text: "Sí: se intercambiaron el verde y el azul", correct: true },
+      { text: "No: se respetó estrictamente la normativa 568B sin ningún cruce", correct: false },
+      { text: "Sí: se intercambiaron el naranja y el marrón", correct: false },
+      { text: "Sí: se cruzaron todos los pares para obtener un cable cruzado (crossover)", correct: false }
+    ],
+    explanation: "En el cable que se realizó en la práctica sí se cruzó algún hilo: se intercambiaron el verde y el azul."
+  },
+  {
+    question: "¿Para qué se usó la guía-cruceta de plástico del interior del cable UTP?",
+    options: [
+      { text: "Separa los pares trenzados en el centro del cable; se elimina antes de crimpar", correct: true },
+      { text: "Actúa como blindaje interno entre los pares de señal diferencial", correct: false },
+      { text: "Refuerza la resistencia mecánica del cable ante tirones", correct: false },
+      { text: "Facilita el correcto orden de los hilos según la normativa 568B", correct: false }
+    ],
+    explanation: "La guía-cruceta de plástico separa los pares en el interior del cable. Se debe eliminar durante el proceso de crimpado."
+  },
+  {
+    question: "¿Cuál es el valor de la bobina calculada en la práctica de filtros pasivos?",
+    options: [
+      { text: "1 mH", correct: true },
+      { text: "10 mH", correct: false },
+      { text: "100 µH", correct: false },
+      { text: "4,7 mH", correct: false }
+    ],
+    explanation: "El valor de la bobina obtenido fue de 1 mH, junto con un condensador de 4,7 µF, para una frecuencia de cruce de 2,5 kHz en un filtro de 2º orden."
+  },
+  {
+    question: "¿Qué banda de colores indica la tolerancia en las resistencias de la práctica 2, y en qué posición se coloca para leer el valor?",
+    options: [
+      { text: "Dorada (±5%) — se coloca a la derecha", correct: true },
+      { text: "Plateada (±10%) — se coloca a la izquierda", correct: false },
+      { text: "Dorada (±5%) — se coloca a la izquierda", correct: false },
+      { text: "Roja (±2%) — se coloca a la derecha", correct: false }
+    ],
+    explanation: "La banda de tolerancia era dorada (±5%) y se coloca a la derecha para leer correctamente el valor de la resistencia."
+  },
+  {
+    question: "¿Con qué equipo se pudo escuchar el micrófono construido en la práctica 4?",
+    options: [
+      { text: "Uno de los previos de una consola de sonido, cuya salida se envió a un altavoz autoamplificado", correct: true },
+      { text: "Directamente con unos auriculares conectados al hilo de cobre", correct: false },
+      { text: "A través del interface de audio conectado al software SMAART", correct: false },
+      { text: "Con un amplificador de auriculares conectado a los extremos de la bobina", correct: false }
+    ],
+    explanation: "Se utilizó uno de los previos de una consola de sonido, cuya salida se había enviado a un altavoz autoamplificado."
+  },
+  {
+    question: "¿Cuántos colores base se usan en los hilos de un cable UTP de datos?",
+    options: [
+      { text: "Cuatro colores (naranja, verde, azul, marrón) y cada uno mezclado con blanco", correct: true },
+      { text: "Tres colores (rojo, verde, azul) y cada uno mezclado con blanco", correct: false },
+      { text: "Seis colores completamente distintos sin mezclas", correct: false },
+      { text: "Ocho colores completamente diferentes entre sí", correct: false }
+    ],
+    explanation: "Se usan cuatro colores base: naranja, verde, azul y marrón. Cada uno tiene su versión mezclada con blanco, dando los 8 hilos totales."
+  }
+];
+
+// ─── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initQuiz('quiz-t1', questionsT1);
+  initQuiz('quiz-t2', questionsT2);
+  initQuiz('quiz-t3', questionsT3);
+  initQuiz('quiz-t4', questionsT4);
+  initQuiz('quiz-t5', questionsT5);
+});
+</script>
+
+<div style="
+  position: fixed;
+  bottom: 14px;
+  right: 16px;
+  background: var(--header-bg);
+  color: #4a9a6a;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(42,138,98,0.3);
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 999;
+">V1.0</div>
+
+</body>
+</html>
